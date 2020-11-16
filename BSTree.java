@@ -111,6 +111,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
                     delete(key);
                 else 
                     x.val = val;
+                return;
             }
         }
         z.father = y;
@@ -243,13 +244,15 @@ public class BSTree <Key extends Comparable<Key>, Value> {
 
             for (int j = 0; j < n; j ++) {
                 tmp = br.readLine();
+                st = new StringTokenizer(tmp);
 
                 //pos = rank(new City(tmp, 0), whitelist);
-                city = mytree.get(tmp);
-                if (city == null)
-                    System.out.print("\n[Failed] " + tmp + " wasn't found.");
-                else {
-                    System.out.println("\n[Ok]\t" + city.toString());
+                city = mytree.get(st.nextToken());
+
+                if (city == null){
+                    System.out.print("\n[Failed] " + st.nextToken() + " wasn't found.");
+                } else {
+                    System.out.print("\n[Ok]\t" + city.toString());
                 }
             }
             br.close();
