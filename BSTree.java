@@ -29,7 +29,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
     }
 
     private void inorder(Node x) {
-        if(x == null) return;
+        if (x == null) return;
         inorder(x.left);
         System.out.println(x.key + " " + x.val);
         inorder(x.right);
@@ -40,7 +40,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
     }
 
     private void revorder(Node x) {
-        if(x == null) return;
+        if (x == null) return;
         revorder(x.right);
         System.out.println(x.key + " " + x.val);
         revorder(x.left);
@@ -51,7 +51,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
     }
 
     private void preorder(Node x) {
-        if(x == null) return;
+        if (x == null) return;
         System.out.println(x.key + " " + x.val);
         preorder(x.left);
         preorder(x.right);
@@ -62,7 +62,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
     }
 
     private void posorder(Node x) {
-        if(x == null) return;
+        if (x == null) return;
         posorder(x.left);
         posorder(x.right);
         System.out.println(x.key + " " + x.val);
@@ -74,7 +74,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
     public BSTree(){ }
 
     public boolean contains(Key key) {
-        if(key == null)
+        if (key == null)
             throw new NullPointerException("argument to contains() is null");
         return get(key) != null;
     }
@@ -102,11 +102,11 @@ public class BSTree <Key extends Comparable<Key>, Value> {
         while(x != null) {
             y = x;
             cmp = key.compareTo(x.key);
-            if(cmp < 0)
+            if (cmp < 0)
                 x = x.left;
-            if(cmp > 0)
+            if (cmp > 0)
                 x = x.right;
-            if(cmp == 0) {
+            if (cmp == 0) {
                 if (val == null) 
                     delete(key);
                 else 
@@ -114,7 +114,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
             }
         }
         z.father = y;
-        if(y == null)
+        if (y == null)
             root = z;
         else {
             cmp = key.compareTo(y.key);
@@ -123,5 +123,144 @@ public class BSTree <Key extends Comparable<Key>, Value> {
             else
                 y.right = z;
         }
+    }
+
+    private void transplant(Node u, Node v) {
+        if (u.father == null) {
+            root = v;
+        } else {
+            if (u == u.father.left) {
+                u.father.left = v;
+            } else {
+                u.father.right = v;
+            }
+        }
+        if (v != null) {
+            v.father = u.father;
+        }
+    }
+
+    public void delete(Key key) {
+        if (key == null)
+            throw new NullPointerException("argument to delete() is null");
+        delete(root, key);
+    }
+
+    private void delete(Node z, Key key) {
+        if (z == null) return;
+
+        int cmp = key.compareTo(z.key);
+        if (cmp < 0)
+            delete(z.left, key);
+        else if (cmp > 0)
+            delete(z.right, key);
+        else {
+            if (z.left == null) {
+                transplant(z, z.right);
+            } else {
+                if (z.right == null) {
+                    transplant(z, z.left);
+                } else {
+                    Node y = min(z.right);
+                    if (y.father != z) {
+                        transplant(y, y.right);
+                        y.right = z.right;
+                        y.right.father = y;
+                    }
+                    transplant(z, y);
+                    y.left = z.left;
+                    y.left.father = y;
+                }
+            }
+        }
+    }
+
+    public Key min() {
+        if (isEmpty())
+            throw new NoSuchElementException("called min() with empty symbol table");
+        return min(root).key;
+    }
+
+    private Node min(Node x) {
+        if (x.left == null) 
+            return x;
+        else
+            return min(x.left);
+    }
+
+    public Key max() {
+        if (isEmpty())
+            throw new NoSuchElementException("called max() with empty symbol table");
+        return max(root).key;
+    }
+
+    private Node max(Node x) {
+        if (x.right == null) 
+            return x;
+        else
+            return max(x.right);
+    }
+
+    /**
+     * Unit tests the <tt>BST</tt> data type.
+     */
+    public static void main(String[] args) {
+        
+        if (args.length < 2) {
+            System.out.println("\n\nUso: java BSTree arquivo1 arquivo2\n\n");
+            System.exit(0);
+        }
+        int n;
+
+        String tmp;
+        StringTokenizer st;
+
+        BSTree<String, Cidade> mytree = new BSTree<String, Cidade>();
+        Cidade city;
+
+        try {
+            FileReader in1 = new FileReader(args[0]);
+            BufferedReader br = new BufferedReader(in1);
+            n = Integer.parseInt(br.readLine());
+
+            for (int j = 0; j < n; j++) {
+                tmp = br.readLine();
+                st = new StringTokenizer(tmp);
+
+                city = new Cidade(
+                    st.nextToken(),
+                    Integer.parseInt(st.nextToken())
+                );
+                mytree.put(city.get_nome(), city);
+            }
+            br.close();
+            in1.close();
+
+            in1 = new FileReader(args[1]);
+            br = new BufferedReader(in1);
+
+            n = Integer.parseInt(br.readLine());
+
+            for (int j = 0; j < n; j ++) {
+                tmp = br.readLine();
+
+                //pos = rank(new Cidade(tmp, 0), whitelist);
+                city = mytree.get(tmp);
+                if (city == null)
+                    System.out.print("\n[Failed] " + tmp + " não foi encontrada.");
+                else {
+                    System.out.print(
+                        "\n[Ok]\t" + city.get_nome() + 
+                        " foi encontrada. Temperatura lá é " + city.get_temp() +
+                        " F"
+                    );
+                }
+            }
+            br.close();
+            in1.close();
+            System.out.println("\n");
+        } catch (IOException ioe) {
+            
+        } 
     }
 }
