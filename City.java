@@ -30,7 +30,7 @@ public class City implements Comparable<City>{
 	
 	public String toString() {
 		String message = "The city " + name + " is measuring " 
-					     + temperature + "°";
+					     + temperature + " F";
 		return message;
 	}
 	

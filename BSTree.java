@@ -215,8 +215,8 @@ public class BSTree <Key extends Comparable<Key>, Value> {
         String tmp;
         StringTokenizer st;
 
-        BSTree<String, Cidade> mytree = new BSTree<String, Cidade>();
-        Cidade city;
+        BSTree<String, City> mytree = new BSTree<String, City>();
+        City city;
 
         try {
             FileReader in1 = new FileReader(args[0]);
@@ -227,11 +227,11 @@ public class BSTree <Key extends Comparable<Key>, Value> {
                 tmp = br.readLine();
                 st = new StringTokenizer(tmp);
 
-                city = new Cidade(
+                city = new City(
                     st.nextToken(),
                     Integer.parseInt(st.nextToken())
                 );
-                mytree.put(city.get_nome(), city);
+                mytree.put(city.getName(), city);
             }
             br.close();
             in1.close();
@@ -244,16 +244,12 @@ public class BSTree <Key extends Comparable<Key>, Value> {
             for (int j = 0; j < n; j ++) {
                 tmp = br.readLine();
 
-                //pos = rank(new Cidade(tmp, 0), whitelist);
+                //pos = rank(new City(tmp, 0), whitelist);
                 city = mytree.get(tmp);
                 if (city == null)
-                    System.out.print("\n[Failed] " + tmp + " não foi encontrada.");
+                    System.out.print("\n[Failed] " + tmp + " wasn't found.");
                 else {
-                    System.out.print(
-                        "\n[Ok]\t" + city.get_nome() + 
-                        " foi encontrada. Temperatura lá é " + city.get_temp() +
-                        " F"
-                    );
+                    System.out.println("\n[Ok]\t" + city.toString());
                 }
             }
             br.close();
