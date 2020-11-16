@@ -207,7 +207,7 @@ public class BSTree <Key extends Comparable<Key>, Value> {
     public static void main(String[] args) {
         
         if (args.length < 2) {
-            System.out.println("\n\nUso: java BSTree arquivo1 arquivo2\n\n");
+            System.out.println("\n\nUsage: java BSTree file1 file2\n\n");
             System.exit(0);
         }
         int n;
