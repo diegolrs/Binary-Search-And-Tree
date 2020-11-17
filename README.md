@@ -10,4 +10,4 @@
 
 * Usage: java BSTree fileWithItems fileWithItemsToSearch
 
-<center>(Warning: Not recommended for sequencials values).</center>
+<p align="center">(Warning: Not recommended for sequencials values).</p>
