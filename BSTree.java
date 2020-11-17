@@ -245,12 +245,14 @@ public class BSTree <Key extends Comparable<Key>, Value> {
             for (int j = 0; j < n; j ++) {
                 tmp = br.readLine();
                 st = new StringTokenizer(tmp);
+				
 
                 //pos = rank(new City(tmp, 0), whitelist);
-                city = mytree.get(st.nextToken());
+				String name = st.nextToken();
+                city = mytree.get(name);
 
                 if (city == null){
-                    System.out.print("\n[Failed] " + st.nextToken() + " wasn't found.");
+                    System.out.print("\n[Failed] " + name + " wasn't found.");
                 } else {
                     System.out.print("\n[Ok]\t" + city.toString());
                 }
